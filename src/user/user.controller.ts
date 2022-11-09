@@ -41,27 +41,28 @@ export class UserController {
   findAll() {
     return this.userService.findAll();
   }
-
+  @Role('USER')
   @UseGuards(JwtAuthGuard)
   @Get()
   findOne(@Req() req: any) {
-    console.log(req.user);
     return this.userService.findOne(req.user.email);
   }
 
   @Role('OWNER')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @Patch('updatetodm')
+  @Patch('updatetoadm')
   updateToAdm(@Body() updateUserDto: UpdateUserDto) {
     return this.userService.updateToAdmin(updateUserDto.email);
   }
 
+  @Role('USER')
   @UseGuards(JwtAuthGuard)
   @Patch()
   update(@Req() req: any, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(req.user.email, updateUserDto);
   }
 
+  @Role('USER')
   @UseGuards(JwtAuthGuard)
   @Delete()
   remove(@Req() req: any) {

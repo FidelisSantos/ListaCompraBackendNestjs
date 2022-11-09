@@ -80,7 +80,7 @@ export class UserService {
       if (updateUserDto.username) user.username = updateUserDto.username;
       if (updateUserDto.password)
         user.password = await bcrypt.hash(updateUserDto.password, 10);
-      await this.userRepository.update(user);
+      return await this.userRepository.update(user);
     } catch (error) {
       throw new HttpException(
         'Internal Error',
@@ -91,6 +91,7 @@ export class UserService {
   async updateToAdmin(email: string) {
     try {
       const user = await this.userRepository.findOne(email);
+      console.log(user);
       if (!user)
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       user.role.push(UserRole.ADM);
