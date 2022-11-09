@@ -14,9 +14,8 @@ export class SendService {
   async sendEmailForgotPassword(email: string) {
     try {
       const user = await this.userRespository.exists(email);
-      console.log(process.env.USER_MAILER);
       if (!user) throw new HttpException('User NotFound', HttpStatus.NOT_FOUND);
-      const envio = await this.mailerService.sendMail({
+      await this.mailerService.sendMail({
         to: email,
         from: process.env.USER_MAILER,
         subject: 'Deu Boa envio de email',

@@ -91,7 +91,6 @@ export class UserService {
   async updateToAdmin(email: string) {
     try {
       const user = await this.userRepository.findOne(email);
-      console.log(user);
       if (!user)
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       user.role.push(UserRole.ADM);
