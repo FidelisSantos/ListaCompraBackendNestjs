@@ -19,6 +19,7 @@ import { RoleGuard } from 'src/auth/role/role.guard';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @Role('USER')
   @Post()
   @UseGuards(JwtAuthGuard)
   create(@Req() req: any, @Body() products?: string[]) {
@@ -34,18 +35,21 @@ export class ProductController {
     return this.productService.findAll();
   }
 
+  @Role('USER')
   @Get()
   @UseGuards(JwtAuthGuard)
   findOne(@Req() req: any) {
     return this.productService.findOne(req.user.email);
   }
 
+  @Role('USER')
   @Patch()
   @UseGuards(JwtAuthGuard)
   async update(@Req() req: any, @Body() updateProductDto: UpdateProductDto) {
     return await this.productService.update(req.user.email, updateProductDto);
   }
 
+  @Role('USER')
   @Delete()
   @UseGuards(JwtAuthGuard)
   remove(@Req() req: any) {

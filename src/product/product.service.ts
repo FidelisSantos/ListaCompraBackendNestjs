@@ -33,6 +33,7 @@ export class ProductService {
   async findOne(id: string) {
     try {
       const products = await this.productRepository.findOne(id);
+      if (!products) return 'Usuário ainda não possui produtos';
       const viewProduct = new ViewProduct(products.Produto);
       return viewProduct;
     } catch (error) {
@@ -56,12 +57,14 @@ export class ProductService {
   }
 
   async remove(id: string) {
-    const products = await this.productRepository.findOne(id);
-    if (!products)
-      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
     try {
+      const products = await this.productRepository.findOne(id);
+      if (!products)
+        throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
+
       products.Produto = [];
       await this.productRepository.update(products);
+      return 'Lista deletada';
     } catch (error) {
       throw new HttpException('Internal Error', HttpStatus.UNAUTHORIZED);
     }
