@@ -15,10 +15,14 @@ import { JwtAuthGuard } from 'src/auth/jwt/jwt-auth.guard';
 import { Role } from 'src/auth/role.decorator';
 import { UserRole } from './types/user-role';
 import { RoleGuard } from 'src/auth/role/role.guard';
+import { SendService } from './send.service';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly sendService: SendService,
+  ) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -67,5 +71,11 @@ export class UserController {
   @Delete()
   remove(@Req() req: any) {
     return this.userService.remove(req.user.email);
+  }
+
+  @Post('forgot')
+  fogort(@Body() email: string) {
+    console.log('entrei');
+    return this.sendService.sendEmailForgotPassword(email);
   }
 }
